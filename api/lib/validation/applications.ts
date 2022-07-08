@@ -19,7 +19,11 @@ export const applyRequest: Schema = {
                 console.log(req.files);
                 if (!req.files.resume) return false;
                 const resume = req.files.resume as UploadedFile;
-                return ['application/pdf', 'application/msword', 'application/docx'].includes(resume.mimetype);
+                return [
+                    'application/pdf', 
+                    'application/msword', 
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                ].includes(resume.mimetype);
             }
         }
     },

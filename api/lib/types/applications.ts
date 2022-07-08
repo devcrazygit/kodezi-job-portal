@@ -1,4 +1,5 @@
 import { Application, Resubmission } from "../../model/Application.model";
+import { PagerQueryType } from "./common";
 
 export interface ApplicationRequest {
     phone: string;
@@ -13,6 +14,8 @@ export interface ApplicationResponse {
     resume: string,
     resubmission: Resubmission
 }
+
+export interface ApplicationQuery extends PagerQueryType {}
 
 export const application2Response = (data: Application): ApplicationResponse => ({
     jobId: data.job._id,

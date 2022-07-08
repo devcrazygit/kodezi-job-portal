@@ -8,7 +8,7 @@ export const PageQuery: Schema = {
             errorMessage: 'Page should be positive value',
             options: { min: 0 }
         },
-        toInt: true
+        toInt: true,
     },
     size: {
         in: ['query'],

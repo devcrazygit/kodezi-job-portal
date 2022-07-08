@@ -11,7 +11,7 @@ export class JobController {
     async get(req: Request) {
         const queryData = req.query as JobQuery;
         const { search } = queryData;
-        const { page, size: limit } = sanitizePager(req.query);
+        const {page, size} = sanitizePager(queryData);
 
         let query: FilterQuery<Job> = {};
         if (search) { 
@@ -23,7 +23,7 @@ export class JobController {
                 ]
             }
         }
-        const jobs = await JobModel.find(query).skip(limit * (page - 1)).limit(limit)
+        const jobs = await JobModel.find(query).skip(size * (page - 1)).limit(size)
         
         return jobs.map(job => job2Response(job));
     }

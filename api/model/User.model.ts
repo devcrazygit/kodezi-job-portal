@@ -2,6 +2,7 @@ import { model, Schema, Model, Document } from 'mongoose';
 import { hashSync } from 'bcrypt';
 import { Job } from './Job.model';
 import { PagerResponseType } from '../lib/types/common';
+import { Application } from './Application.model';
 
 export enum Role {
     ADMIN = 1,
@@ -17,7 +18,8 @@ export interface User extends Document {
     createDate: Date, 
     updateDate: Date;
     timestamps?: {};
-    jobs: Job[]
+    jobs: Job[],
+    applications: Application[]
 }
 
 const UserSchema: Schema = new Schema({
@@ -29,6 +31,10 @@ const UserSchema: Schema = new Schema({
     jobs: [{
         type: Schema.Types.ObjectId,
         ref: 'jobs'
+    }],
+    applications: [{
+        type: Schema.Types.ObjectId,
+        ref: 'applications'
     }],
     createDate: { type: Date, default: Date.now },
     updateDate: { type: Date, default: Date.now },

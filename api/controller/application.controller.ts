@@ -1,8 +1,8 @@
 import { Request } from "express";
 import { UploadedFile } from "express-fileupload";
 import { ControllerError } from "../lib/exceptions/controller_exception";
-import { randomKey, toObjectId } from "../lib/helpers/utils";
-import { application2Response, ApplicationRequest } from "../lib/types/applications";
+import { randomKey, sanitizePager, toObjectId } from "../lib/helpers/utils";
+import { application2Response, ApplicationQuery, ApplicationRequest } from "../lib/types/applications";
 import { AuthRequest } from "../lib/types/users";
 import { ApplicationModel } from "../model/Application.model";
 import { JobModel } from "../model/Job.model";
@@ -22,20 +22,31 @@ export class ApplicationController {
             throw new ControllerError('You have already applied', 404);
         }
 
-        const path = (req.files.resume as UploadedFile).tempFilePath;
-        console.log('uploaded temp file path: ' + path);
-        const blob = readFileSync(path);
-
         const service = AWSService.getInstance();
-        const uploaded = await service.upload(blob, randomKey());
-        const resume = uploaded.Location
+        const resumeFile = req.files.resume as UploadedFile
+        const ext = resumeFile.name.split('.').pop();
+        const uploaded = await service.upload(resumeFile.data, randomKey() + '.' + ext);
         
         const application = await ApplicationModel.create({
             job,
             user: currentUser,
-            resume,
+            resume: uploaded.Location,
             ...data
         });
         return application2Response(application);
+    }
+    async get(req: AuthRequest) {
+        const { page, size } = sanitizePager(req.query as ApplicationQuery);
+        
+        const currentUser = req.user;
+        await currentUser.populate([
+            {
+                path: 'applications',
+                options: {
+                    skip: size * (page - 1),
+                    limit: size
+                },
+            }
+        ])
     }
 }

@@ -2,8 +2,7 @@ import { Request } from "express";
 import { FilterQuery } from "mongoose";
 import { ControllerError } from "../../lib/exceptions/controller_exception";
 import { sanitizePager, searchRegex } from "../../lib/helpers/utils";
-import { PagerResponseType } from "../../lib/types/common";
-import { convertPagerJobs2Response, job2Response, JobQuery, JobRequest } from "../../lib/types/jobs";
+import { job2Response, JobQuery, JobRequest } from "../../lib/types/jobs";
 import { AuthRequest } from "../../lib/types/users";
 import { Job, JobModel } from "../../model/Job.model";
 import { UserModel } from "../../model/User.model";
@@ -28,7 +27,8 @@ export class JobController {
     async get(req: AuthRequest) {
         const queryData = req.query as JobQuery;
         const { search } = queryData;
-        const { page, size: limit } = sanitizePager(req.query);
+        const { page, size } = sanitizePager(queryData);
+        
         const currentUser = req.user;
         
         let query: FilterQuery<Job> = {};
@@ -45,8 +45,8 @@ export class JobController {
             {
                 path: 'jobs',
                 options: {
-                    skip: limit * (page - 1),
-                    limit
+                    skip: size * (page - 1),
+                    limit: size
                 },
                 match: query
             }
