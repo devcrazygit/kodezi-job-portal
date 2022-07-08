@@ -6,10 +6,11 @@ const jobSeed = async () => {
     if (!admin) {
         throw new Error('Please seed users first');
     }
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i < 30; i++) {
         await JobModel.create({
             title: `Job ${i}`,
-            description: `Good job ${i}`
+            description: `Good job ${i}`,
+            user: admin
         })
     }
 }

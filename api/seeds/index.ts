@@ -3,7 +3,7 @@ import jobSeed from "./jobs";
 import { connect } from "../config/db.config";
 
 const dbSeed = async () => {
-    // connect();
+    connect();
     const args = process.argv.slice(2);
     console.log('args', args);
     if (args[0]) {

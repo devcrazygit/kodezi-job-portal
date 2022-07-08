@@ -19,13 +19,17 @@ export const jobCreateRequest: Schema = {
         }
     }
 }
-
-export const jobUpdateRequest: Schema = {
+export const jobRetrieveRequest: Schema = {
     id: {
         in: ['params']
     },
+}
+
+export const jobUpdateRequest: Schema = {
+    ...jobRetrieveRequest,
     ...jobCreateRequest
 }
+
 
 export const jobQueryRequest: Schema = {
     search: {

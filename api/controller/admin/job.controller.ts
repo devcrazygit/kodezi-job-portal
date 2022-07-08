@@ -36,7 +36,8 @@ export class JobController {
             const searchPattern = searchRegex(search);
             query = {
                 $or: [
-                    { title: { $regex:  searchPattern, $options: 'i' }}
+                    { title: { $regex:  searchPattern, $options: 'i' }},
+                    { description: { $regex:  searchPattern, $options: 'i' }}
                 ]
             }
         }
@@ -51,9 +52,7 @@ export class JobController {
             }
         ])
         .execPopulate()
-        
-        // return convertPagerJobs2Response(currentUser.jobs as PagerResponseType<Job>);
-        return currentUser
+        return currentUser.jobs.map(job => job2Response(job));
     }
     async retrieve(req: AuthRequest) {
         const id = req.params.id;

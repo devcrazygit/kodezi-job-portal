@@ -27,6 +27,7 @@ export const user2Response = (user: User) => ({
     id: user._id, 
     name: user.name, 
     email: user.email,
+    role: user.role,
     createdDate: user.createDate,
     updatedDate: user.updateDate
 })

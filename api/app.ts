@@ -6,6 +6,7 @@ import swaggerUi = require('swagger-ui-express');
 import routes from "./routes/index";
 import { ControllerError } from "./lib/exceptions/controller_exception";
 import { connect } from "./config/db.config";
+import fileUpload = require("express-fileupload");
 
 class App {
 
@@ -33,6 +34,7 @@ class App {
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: false }));
         this.express.use(express.static(path.join(__dirname, '../ui/build')));
+        this.express.use(fileUpload());
     }
 
     private routes(): void {

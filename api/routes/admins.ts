@@ -1,6 +1,6 @@
 import { Route } from ".";
 import { JobController } from "../controller/admin/job.controller";
-import { jobCreateRequest, jobQueryRequest, jobUpdateRequest } from "../lib/validation/jobs";
+import { jobCreateRequest, jobQueryRequest, jobRetrieveRequest, jobUpdateRequest } from "../lib/validation/jobs";
 import { authorize } from "../middleware/authorize";
 import validate from "../middleware/validate";
 import { Role } from "../model/User.model";
@@ -33,8 +33,8 @@ const routes: Route[] = [
         name: 'job retrieve',
         method: 'get',
         path: '/api/jobs/:id',
-        middleware: [validate(jobUpdateRequest)],
-        handler: jobController.update
+        middleware: [validate(jobRetrieveRequest)],
+        handler: jobController.retrieve
     },
 ]
 export default routes.map(route => {

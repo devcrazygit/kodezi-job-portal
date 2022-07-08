@@ -1,4 +1,5 @@
 import { PagerQueryType } from "../types/common";
+import { Types } from "mongoose";
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -8,4 +9,10 @@ export const sanitizePager = (query: PagerQueryType): PagerQueryType => {
     if (!page) page = 1;
     if (!size) size = DEFAULT_PAGE_SIZE;
     return {page, size}
+}
+export const toObjectId = (data: string): Types.ObjectId => {
+    return new Types.ObjectId(data);
+}
+export const randomKey = (len: number = 5) => {
+    return Math.random().toString(36).slice(2, 2 + len);
 }
