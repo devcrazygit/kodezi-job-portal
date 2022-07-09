@@ -3,6 +3,7 @@ import SignIn from "views/layouts/authentication/SignIn";
 import SignUp from "views/layouts/authentication/SignUp";
 import AdminHome from "views/pages/admin/AdminHome";
 import EmptyPage from "views/pages/EmptyPage";
+import JobDetail from "views/pages/user/JobDetail";
 import UserHome from "views/pages/user/UserHome";
 
 export enum Guard {
@@ -15,21 +16,31 @@ export type NavItemType = {
     anchor: string;
     to: string;
     component: any,
-    guard: Guard
+    guard: Guard,
+    menu?: boolean,
 }
 
 const navs: NavItemType[] = [
     {
-        anchor: 'User Dashboard',
+        anchor: 'Dashboard',
         to: '/user',
         component: UserHome,
-        guard: Guard.USER
+        guard: Guard.USER,
+        menu: true
     },
     {
-        anchor: 'Admin Dashboard',
+        anchor: 'Dashboard',
         to: '/admin',
         component: AdminHome,
-        guard: Guard.ADMIN
+        guard: Guard.ADMIN,
+        menu: true
+    },
+    {
+        anchor: 'Job Detail',
+        to: '/user/job/:id',
+        component: JobDetail,
+        guard: Guard.USER,
+        menu: false
     },
     {
         anchor: 'Empty Page',
@@ -59,6 +70,9 @@ export const userPaths = navs.filter(({ guard }) => guard === Guard.USER);
 export const isPublicPath = (path: string) =>
     publicPaths.findIndex(({ to }) => to === path) > -1;
 
+export const userNavs = navs.filter(({ guard, menu }) => menu && guard === Guard.USER);
+export const adminNavs = navs.filter(({ guard, menu }) => menu && guard === Guard.ADMIN);
+
 export const isUserPath = (path: string) =>
     userPaths.findIndex(({ to }) => to === path) > -1;
 
@@ -71,4 +85,3 @@ export const getNavItemFromPath = (path: string) => {
     }
     return navs[navs.length - 1];
 };
-    

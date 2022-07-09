@@ -1,7 +1,16 @@
+import { Button, Card } from "@mui/material";
+
 const AdminHome = () => {
     return (
         <>
-            Admin Home
+            <div className="flex">
+                <Button variant="contained">New Job</Button>
+            </div>
+            <div className="mt-16">
+                <Card>
+                    
+                </Card>
+            </div>
         </>
     )
 };

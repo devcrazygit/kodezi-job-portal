@@ -7,6 +7,7 @@ import SignUp from 'views/layouts/authentication/SignUp';
 import DashboardLayout from 'views/layouts/DashboardLayout';
 import UserHome from 'views/pages/user/UserHome';
 import AdminHome from 'views/pages/admin/AdminHome';
+import JobDetail from 'views/pages/user/JobDetail';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="signup" element={<SignUp />} />
           <Route path="/" element={<DashboardLayout />}>
             <Route path="user" element={<UserHome />} />
+            <Route path="user/job/:id" element={<JobDetail />} />
             <Route path="admin" element={<AdminHome />} />
           </Route>
         </Routes>

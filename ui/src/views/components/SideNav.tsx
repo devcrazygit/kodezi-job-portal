@@ -1,6 +1,31 @@
+import { adminNavs, userNavs } from "navs";
+import { useCallback } from "react";
+import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "store";
+import { getSession } from "store/reducers/session";
+import { sessionSelector } from "store/selectors/session";
+import { Role } from "types/models/session";
 
 const SideNav = () => {
+    const location = useLocation();
+    const {
+        data: session,
+        loading: sessionLoading,
+        initial
+    } = useAppSelector(sessionSelector);
+    const dispatch = useAppDispatch();
+
+    if (initial && !sessionLoading) {
+        dispatch(getSession());
+    }
+    const isActiveNav = useCallback((url: string) => {
+        return location.pathname.startsWith(url);
+    }, [location.pathname])
+    
+    if (!session) {
+        return <></>
+    }
 
     return (
         <div className={"flex-none w-2/12 menu min-h-screen bg-zinc-800"}>
@@ -25,24 +50,30 @@ const SideNav = () => {
             <div className="relative">
                 <nav>
                     <ul>
-                        <li>
-                            <Link className="flex p-1 align-center cursor-pointer py-4 px-4 bg-blue-500 hover:bg-blue-300" 
-                                to="/"
-                            >
-                                <span className="font-bold ml-2 text-white">
-                                    Dashboard
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link className="flex p-1 align-center cursor-pointer py-4 px-4 bg-zinc-800 hover:bg-blue-300" 
-                                to="/"
-                            >
-                                <span className="font-bold ml-2 text-white">
-                                    Dashboard
-                                </span>
-                            </Link>
-                        </li>
+                        {(session.role === Role.ADMIN ? adminNavs : userNavs)
+                            .map((nav, index) => (
+                                <li key={index}>
+                                    {isActiveNav(nav.to) ? (
+                                    
+                                        <Link className="flex p-1 align-center cursor-pointer py-4 px-4 bg-blue-500 hover:bg-blue-300" 
+                                            to={nav.to}
+                                        >
+                                            <span className="font-bold ml-2 text-white">
+                                                {nav.anchor}
+                                            </span>
+                                        </Link>
+                                    ) : (
+                                        <Link className="flex p-1 align-center cursor-pointer py-4 px-4 bg-zinc-800 hover:bg-blue-300" 
+                                            to={nav.to}
+                                        >
+                                            <span className="font-bold ml-2 text-white">
+                                                {nav.anchor}
+                                            </span>
+                                        </Link>
+                                    )}
+                                </li>
+                            ))
+                        }
                     </ul>
                 </nav>
             </div>

@@ -2,7 +2,10 @@ import { Request } from "express";
 import { FilterQuery } from "mongoose";
 import { ControllerError } from "../lib/exceptions/controller_exception";
 import { sanitizePager, searchRegex } from "../lib/helpers/utils";
+import { application2Response } from "../lib/types/applications";
 import { job2Response, JobQuery } from "../lib/types/jobs";
+import { AuthRequest } from "../lib/types/users";
+import { ApplicationModel } from "../model/Application.model";
 import { Job, JobModel } from "../model/Job.model";
 
 export class JobController {
@@ -23,15 +26,22 @@ export class JobController {
                 ]
             }
         }
-        const jobs = await JobModel.find(query).skip(size * (page - 1)).limit(size)
+        const jobs = await JobModel.find(query)
+            .populate('user', ['name'])
+            .skip(size * (page - 1)).limit(size);
         
         return jobs.map(job => job2Response(job));
     }
-    async retrieve(req: Request) {
-        const id = req.params.id;
+    async retrieve(req: AuthRequest) {
+        const id = req.params.jobId;
         const job = await JobModel.findById(id);
+        const user = req.user;
         if (!job) throw new ControllerError('No such a job', 400)
-        return job2Response(job);
+        const application = await ApplicationModel.findOne({ user, job})
+        return {
+            application: application ? application2Response(application) : null,
+            job: job2Response(job)
+        }
     }
 
 }

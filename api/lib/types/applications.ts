@@ -7,6 +7,7 @@ export interface ApplicationRequest {
 }
 
 export interface ApplicationResponse {
+    id: string,
     jobId: string,
     userId: string,
     phone: string,
@@ -18,6 +19,7 @@ export interface ApplicationResponse {
 export interface ApplicationQuery extends PagerQueryType {}
 
 export const application2Response = (data: Application): ApplicationResponse => ({
+    id: data._id,
     jobId: data.job._id,
     userId: data.user._id,
     phone: data.phone,

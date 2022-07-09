@@ -17,6 +17,7 @@ export interface JobResponse {
     description: string,
     createDate: string,
     updateDate: string,
+    authorName?: string
 }
 export const job2Response = (job: Job) => ({
     id: job._id,
@@ -24,7 +25,8 @@ export const job2Response = (job: Job) => ({
     userId: job.user?._id,
     description: job.description,
     createDate: job.createDate,
-    updateDate: job.updateDate
+    updateDate: job.updateDate,
+    authorName: job.user ? job.user.name : null
 })
 
 export const convertPagerJobs2Response = (data): PagerResponseType<JobResponse> => {
