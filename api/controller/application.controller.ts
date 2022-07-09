@@ -4,7 +4,7 @@ import { ControllerError } from "../lib/exceptions/controller_exception";
 import { randomKey, sanitizePager, toObjectId } from "../lib/helpers/utils";
 import { application2Response, ApplicationQuery, ApplicationRequest } from "../lib/types/applications";
 import { AuthRequest } from "../lib/types/users";
-import { ApplicationModel } from "../model/Application.model";
+import { ApplicationModel, Resubmission } from "../model/Application.model";
 import { JobModel } from "../model/Job.model";
 import { AWSService } from "../services/aws";
 import { readFileSync } from 'fs';
@@ -15,6 +15,9 @@ export class ApplicationController {
         const data = req.body as ApplicationRequest;
         const jobId = req.params.jobId;
         const job = await JobModel.findById(jobId);
+        if (!job) {
+            throw new ControllerError('No such a job', 404);
+        }
         const currentUser = req.user;
 
         const existing = await ApplicationModel.findOne({ job, user: currentUser });
@@ -31,8 +34,40 @@ export class ApplicationController {
             job,
             user: currentUser,
             resume: uploaded.Location,
-            ...data
+            ...data,
+            resubmission: Resubmission.NONE
         });
+        return application2Response(application);
+    }
+    async update(req: AuthRequest) {
+        const currentUser = req.user;
+        const data = req.body as ApplicationRequest;
+        const applicationId = req.params.applicationId;
+        const application = await ApplicationModel.findById(applicationId);
+        if (!application || application.user._id !== currentUser._id) {
+            throw new ControllerError('No such a application', 404);
+        }
+        if (application.resubmission === Resubmission.NONE) {
+            throw new ControllerError('No update request')
+        }
+        
+        if (application.resubmission === Resubmission.COVERLETTER) {
+            if (data.coverletter === application.coverletter) {
+                throw new ControllerError('No changes in coverletter');
+            }
+            application.coverletter = data.coverletter;
+        }
+
+        if (application.resubmission === Resubmission.RESUME) {
+            if (!req.files.resume) throw new ControllerError('Please update resume');
+            const service = AWSService.getInstance();
+            const resumeFile = req.files.resume as UploadedFile
+            const ext = resumeFile.name.split('.').pop();
+            const uploaded = await service.upload(resumeFile.data, randomKey() + '.' + ext);
+            application.resume = uploaded.Location;
+        }
+        application.resubmission = Resubmission.NONE;
+        await application.save();
         return application2Response(application);
     }
     async get(req: AuthRequest) {

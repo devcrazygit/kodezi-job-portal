@@ -1,15 +1,14 @@
 import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
-import React, { useCallback } from "react";
-import { useNavigate } from "react-router";
+import React from "react";
 import { JobItemType } from "types/models/job";
 
 const JobItem: React.FC<{ data: JobItemType}> = ({ data }) => {
-    const navigate = useNavigate();
-    const handleClick = useCallback(() => {
-        navigate(`/user/job/${data.id}`)
-    }, [data.id, navigate])
+    // const navigate = useNavigate();
+    // const handleClick = useCallback(() => {
+    //     navigate(`/user/job/${data.id}`)
+    // }, [data.id, navigate])
     return (
-        <Card className="flex-auto mb-2" onClick={handleClick}>
+        <Card className="flex-auto mb-2">
             <CardActionArea>
                 <CardContent>
                     <Typography variant="h5">{ data.title }</Typography>

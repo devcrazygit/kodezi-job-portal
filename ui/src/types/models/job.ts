@@ -5,6 +5,7 @@ export type JobDataType = {
     title: string;
     description: string;
 }
+export type JobFormRequest = JobDataType;
 export type JobItemType = {
     id: string;
     authorName?: string;

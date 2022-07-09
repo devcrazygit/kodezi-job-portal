@@ -167,7 +167,7 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
                         }
                     </Stack>
                     <div className="flex justify-end mt-4">
-                        <KButton variant="contained" onClick={handleSubmit}>Submit</KButton>
+                        <KButton variant="contained" onClick={handleSubmit} loading={loading}>Submit</KButton>
                     </div>
                 </div>
             </CardContent>

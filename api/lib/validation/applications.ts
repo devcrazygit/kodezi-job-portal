@@ -16,8 +16,28 @@ export const applyRequest: Schema = {
     resume: {
         custom: {
             options: (value, { req }) => {
-                console.log(req.files);
                 if (!req.files.resume) return false;
+                const resume = req.files.resume as UploadedFile;
+                return [
+                    'application/pdf', 
+                    'application/msword', 
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                ].includes(resume.mimetype);
+            }
+        }
+    },
+    coverletter: {
+        in: ['body'],
+        optional: { options: { nullable: true }},
+    },
+    ...jobRetrieveRequest
+}
+
+export const applyUpdateRequest: Schema = {
+    resume: {
+        custom: {
+            options: (value, { req }) => {
+                if (!req.files.resume) return true;
                 const resume = req.files.resume as UploadedFile;
                 return [
                     'application/pdf', 

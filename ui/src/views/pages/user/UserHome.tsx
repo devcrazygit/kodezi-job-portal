@@ -3,6 +3,7 @@ import useApi from "hooks/useApi";
 import userJobApi from "modules/api/job.user";
 import { useCallback, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { Pager } from "types/common";
 import { JobItemType } from "types/models/job";
@@ -84,7 +85,9 @@ const UserHome = () => {
                     scrollableTarget="job-list"
                 >
                     {jobs.map(job => (
-                        <JobItem data={job} key={job.id}/>
+                        <Link to={`/user/job/${job.id}`} key={job.id}>
+                            <JobItem data={job}/>
+                        </Link>
                     ))}
                 </InfiniteScroll>
             </div>

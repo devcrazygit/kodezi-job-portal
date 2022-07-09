@@ -52,6 +52,7 @@ export class JobController {
             }
         ])
         .execPopulate()
+        console.log({currentUser})
         return currentUser.jobs.map(job => job2Response(job));
     }
     async retrieve(req: AuthRequest) {

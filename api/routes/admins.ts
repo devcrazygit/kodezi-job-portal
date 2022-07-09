@@ -11,28 +11,28 @@ const routes: Route[] = [
     {
         name: 'job create',
         method: 'post',
-        path: '/api/jobs',
+        path: '/api/admin/jobs',
         middleware: [validate(jobCreateRequest)],
         handler: jobController.create
     },
     {
         name: 'job list',
         method: 'get',
-        path: '/api/jobs',
+        path: '/api/admin/jobs',
         middleware: [validate(jobQueryRequest)],
         handler: jobController.get
     },
     {
         name: 'job update',
         method: 'put',
-        path: '/api/jobs/:id',
+        path: '/api/admin/jobs/:id',
         middleware: [validate(jobUpdateRequest)],
         handler: jobController.update
     },
     {
         name: 'job retrieve',
         method: 'get',
-        path: '/api/jobs/:id',
+        path: '/api/admin/jobs/:id',
         middleware: [validate(jobRetrieveRequest)],
         handler: jobController.retrieve
     },

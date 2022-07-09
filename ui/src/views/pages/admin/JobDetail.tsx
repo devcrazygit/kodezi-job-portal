@@ -13,7 +13,6 @@ const JobDetail = () => {
     const [initial, setInitial] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<JobItemType>();
-    const [application, setApplication] = useState<AppliationResponseType>();
 
     const { apiErrorHandler } = useApi();
 
@@ -23,7 +22,6 @@ const JobDetail = () => {
         userJobApi.retrieveJob(id)
         .then((response: JobDetailForUser) => {
             setData(response.job);
-            setApplication({...response.application});
         })
         .catch(e => apiErrorHandler(e))
         .finally(() => setLoading(false));
@@ -50,9 +48,6 @@ const JobDetail = () => {
                     </div>
                 </CardContent>
             </Card>
-            {!loading && !initial &&
-                <JobApplyForm className="mt-3" jobId={id} application={application}/>
-            }
         </div>
     )
 }

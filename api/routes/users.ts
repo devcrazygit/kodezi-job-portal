@@ -2,7 +2,7 @@ import { Route } from ".";
 import { ApplicationController } from "../controller/application.controller";
 import { JobController } from "../controller/job.controller";
 import { UserController } from "../controller/user.controller"
-import { applyRequest } from "../lib/validation/applications";
+import { applyRequest, applyUpdateRequest } from "../lib/validation/applications";
 import { jobQueryRequest, jobRetrieveRequest } from "../lib/validation/jobs";
 import { userLoginRequest, userRegisterRequest } from "../lib/validation/users"
 import { authorize } from "../middleware/authorize";
@@ -57,6 +57,13 @@ const routes: Route[] = [
         path: '/api/apply/jobs/:jobId',
         middleware: [validate(applyRequest), authorize([Role.USER])],
         handler: applicationController.apply
+    },
+    {
+        name: 'update appliation',
+        method: 'post',
+        path: '/api/application/:applicationId',
+        middleware: [validate(applyUpdateRequest), authorize([Role.USER])],
+        handler: applicationController.update
     }
 ]
 export default routes;
