@@ -7,6 +7,7 @@ import routes from "./routes/index";
 import { ControllerError } from "./lib/exceptions/controller_exception";
 import { connect } from "./config/db.config";
 import fileUpload = require("express-fileupload");
+import * as cors from 'cors';
 
 class App {
 
@@ -35,6 +36,7 @@ class App {
         this.express.use(bodyParser.urlencoded({ extended: false }));
         this.express.use(express.static(path.join(__dirname, '../ui/build')));
         this.express.use(fileUpload());
+        this.express.use(cors());
     }
 
     private routes(): void {

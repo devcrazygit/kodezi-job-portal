@@ -1,26 +1,29 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import Home from './components/Home'
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Root from './Root';
+import { CssBaseline } from '@mui/material';
+import SignIn from 'views/layouts/authentication/SignIn';
+import SignUp from 'views/layouts/authentication/SignUp';
+import DashboardLayout from 'views/layouts/DashboardLayout';
+import UserHome from 'views/pages/user/UserHome';
+import AdminHome from 'views/pages/admin/AdminHome';
 
 function App() {
-
-  return(
-   
-    <BrowserRouter>
-      <div>
+  return (
+    <BrowserRouter basename='/'>
+      <Root>
+        <CssBaseline />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="/" element={<DashboardLayout />}>
+            <Route path="user" element={<UserHome />} />
+            <Route path="admin" element={<AdminHome />} />
+          </Route>
         </Routes>
-      </div>
+      </Root>
     </BrowserRouter>
-  )
-
+  );
 }
 
 export default App;

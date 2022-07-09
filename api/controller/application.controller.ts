@@ -48,5 +48,7 @@ export class ApplicationController {
                 },
             }
         ])
+        .execPopulate();
+        return currentUser.applications.map(item => application2Response(item));
     }
 }

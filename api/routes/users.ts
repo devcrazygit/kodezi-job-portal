@@ -17,14 +17,14 @@ const routes: Route[] = [
     {
         name: 'user register',
         method: 'post',
-        path: '/api/users/register',
+        path: '/api/register',
         middleware: [validate(userRegisterRequest)],
         handler: userController.register
     },
     {
         name: 'user login',
         method: 'post',
-        path: '/api/users/login',
+        path: '/api/login',
         middleware: [validate(userLoginRequest)],
         handler: userController.login
     },

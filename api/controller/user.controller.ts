@@ -28,10 +28,10 @@ export class UserController {
         const user = await UserModel.findOne({ email });
         if (!user) {
             console.error('No such user');
-            throw new ControllerError('No such user', 401);
+            throw new ControllerError('No such user', 404);
         }
         if (!compareSync(password, user.password)) {
-            throw new ControllerError('Incorrect password', 401);
+            throw new ControllerError('Incorrect password', 404);
         }
         const token = sign({id: user._id}, env('JWT_SECRET'), { expiresIn: '24h'});
         return { user: user2Response(user), token }
