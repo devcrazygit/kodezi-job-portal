@@ -42,7 +42,7 @@ const SideNav = () => {
                     </div>
                     <div className="text-gray-100 text-center">
                         <p className="text-sm font-semibold">
-                            Name
+                            {session.name}
                         </p>
                     </div>
                 </div>
