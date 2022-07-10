@@ -29,7 +29,7 @@ const UserHome = () => {
                 setPager({...pager, page: pager.page + 1});
             }
         })
-        .catch(e => apiErrorHandler(e))
+        .catch(apiErrorHandler)
         .finally(() => setLoading(false));
     }, [apiErrorHandler, hasMore, loading, pager]);
 

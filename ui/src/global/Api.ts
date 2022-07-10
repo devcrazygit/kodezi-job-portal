@@ -1,7 +1,6 @@
 import { getToken } from './LocalStorage';
 import axios from 'axios';
 import { getAbsoluteUrl, getUrlWithParam } from '../helpers/url';
-import { formatError } from '../helpers/error';
 import { camelCaseKeys, snakeCaseKeys } from '../helpers/object';
 import _ from 'lodash';
 

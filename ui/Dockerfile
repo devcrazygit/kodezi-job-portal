@@ -5,7 +5,8 @@ FROM node:14-slim
 WORKDIR /usr/app
 
 # Copying only package.json
-COPY package*.json ./
+COPY package*.json ./package*.json
+COPY .env ./
 
 # Install Dependencies
 RUN npm install
@@ -13,7 +14,11 @@ RUN npm install
 # Copy rest of the code to container
 COPY . .
 
-EXPOSE 3080
+EXPOSE 3000
 
 # Run the React app
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
+# CMD ["tail -F /dev/null"]
+
+
+

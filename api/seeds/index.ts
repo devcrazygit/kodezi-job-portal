@@ -1,6 +1,7 @@
 import userSeed from "./users";
 import jobSeed from "./jobs";
 import { connect } from "../config/db.config";
+import applicationSeed from "./applications";
 
 const dbSeed = async () => {
     connect();
@@ -14,6 +15,8 @@ const dbSeed = async () => {
             case 'jobs':
                 await jobSeed();
                 break;
+            case 'applications':
+                await applicationSeed();
         }
         return;
     }
@@ -21,6 +24,7 @@ const dbSeed = async () => {
     console.log('running all seeds');
     await userSeed();
     await jobSeed();
+    await applicationSeed();
     console.log('seed end');
 }
 

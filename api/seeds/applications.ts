@@ -1,4 +1,4 @@
-import { ApplicationModel } from "../model/Application.model";
+import { ApplicationModel, ApplicationStatus, Resubmission } from "../model/Application.model";
 import { JobModel } from "../model/Job.model";
 import { Role, UserModel } from "../model/User.model"
 import { LoremIpsum } from "lorem-ipsum";
@@ -6,7 +6,7 @@ import { LoremIpsum } from "lorem-ipsum";
 
 const applicationSeed = async () => {
     const jobs = await JobModel.find().sort({ createDate: 'ascending' });
-    const users = await UserModel.find().sort({ createDate: 'ascending' });
+    const users = await UserModel.find({ role: Role.USER }).sort({ createDate: 'ascending' });
     const [job1] = jobs;
 
     const lorem = new LoremIpsum({
@@ -27,18 +27,11 @@ const applicationSeed = async () => {
             user,
             phone: number,
             coverletter: lorem.generateSentences(6),
-
+            resume: 'https://kodezi-test.s3.amazonaws.com/bb1at.docx',
+            resubmission: Resubmission.NONE,
+            status: ApplicationStatus.SUBMITTED
         })
     })
     
-    // for (let i = 1; i < 30; i++) {
-    //     const job = await JobModel.create({
-    //         title: `Job ${i}`,
-    //         description: `Good job ${i}`,
-    //         user: admin1
-    //     });
-    //     admin.jobs.push(job);
-    //     await admin.save();
-    // }
 }
 export default applicationSeed;
