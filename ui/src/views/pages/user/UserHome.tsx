@@ -50,18 +50,6 @@ const UserHome = () => {
 
     return (
         <div className="flex flex-col flex-grow overflow-y-scroll pt-4" id="job-list">
-            <div className="flex w-full justify-center gap-x-4">
-                <Card className="flex-auto">
-                    <CardContent>
-                        <Typography variant="h5">Job Posted : 10</Typography>
-                    </CardContent>
-                </Card>
-                <Card className="flex-auto">
-                    <CardContent>
-                        <Typography variant="h5">Job Applied : 10</Typography>
-                    </CardContent>
-                </Card>
-            </div>
             <div className="w-full mt-16">
                 <InfiniteScroll
                     dataLength={jobs.length}
