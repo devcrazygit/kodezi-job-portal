@@ -4,7 +4,7 @@ import { ControllerError } from "../lib/exceptions/controller_exception";
 import { randomKey, sanitizePager, toObjectId } from "../lib/helpers/utils";
 import { application2Response, ApplicationQuery, ApplicationRequest } from "../lib/types/applications";
 import { AuthRequest } from "../lib/types/users";
-import { ApplicationModel, Resubmission } from "../model/Application.model";
+import { ApplicationModel, ApplicationStatus, Resubmission } from "../model/Application.model";
 import { JobModel } from "../model/Job.model";
 import { AWSService } from "../services/aws";
 import { readFileSync } from 'fs';
@@ -35,7 +35,8 @@ export class ApplicationController {
             user: currentUser,
             resume: uploaded.Location,
             ...data,
-            resubmission: Resubmission.NONE
+            resubmission: Resubmission.NONE,
+            status: ApplicationStatus.SUBMITTED
         });
         return application2Response(application);
     }

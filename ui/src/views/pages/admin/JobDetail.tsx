@@ -90,7 +90,6 @@ const JobDetail = () => {
                 >
                     {applications.map(application => (
                         <Link to={`/admin/applications/${application.id}`} key={application.id}>
-                            xxx
                             <ApplicationItem data={application} />
                         </Link>
                     ))}

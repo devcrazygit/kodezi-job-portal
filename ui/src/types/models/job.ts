@@ -1,5 +1,5 @@
 import { Pager } from "types/common";
-import { AppliationResponseType } from "types/models/application";
+import { ApplicationResponseType } from "types/models/application";
 
 export type JobDataType = {
     title: string;
@@ -15,7 +15,7 @@ export type JobItemType = {
 
 export type JobDetailForUser = {
     job: JobItemType,
-    application: AppliationResponseType
+    application: ApplicationResponseType
 }
 
 export type JobQueryType = Pager;

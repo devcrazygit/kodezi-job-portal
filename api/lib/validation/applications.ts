@@ -1,6 +1,7 @@
 import { Request } from "express";
 import { UploadedFile } from "express-fileupload";
 import { body, Schema } from "express-validator";
+import { ApplicationStatus } from "../../model/Application.model";
 import { PageQuery, retrieveQuery } from "./common";
 import { jobRetrieveRequest } from "./jobs";
 
@@ -39,6 +40,27 @@ export const applyRequest: Schema = {
 
 export const applicationRetrieveQuery: Schema = {
     ...retrieveQuery
+}
+
+export const applicationUpdateRequest: Schema = {
+    ...retrieveQuery,
+    status: {
+        in: ['body'],
+        custom: {
+            options: (value) => {
+                return [ApplicationStatus.ACCEPTED, ApplicationStatus.REJECTED, ApplicationStatus.SUBMITTED, ApplicationStatus.RESUBMISSION].includes(value);
+            }
+        }
+    },
+    resubmission: {
+        in: ['body'],
+        custom: {
+            options: (value, { req }) => {
+                if (req.body.status === ApplicationStatus.RESUBMISSION && !value) return false;
+                return true;
+            }
+        }
+    }
 }
 
 export const applyUpdateRequest: Schema = {

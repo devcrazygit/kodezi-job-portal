@@ -1,6 +1,6 @@
 import Api from "global/Api";
 import { ID } from "types/common";
-import { ApplicationRequest } from "types/models/application";
+import { ApplicationDataUpdateRequest } from "types/models/application";
 import { JobQueryType } from "types/models/job";
 
 const getJobs = (query: JobQueryType) => {
@@ -9,7 +9,7 @@ const getJobs = (query: JobQueryType) => {
 const retrieveJob = (id: ID) => {
     return Api.get(`jobs/${id}`);
 }
-const applyJob = (id: ID, data: ApplicationRequest) => {
+const applyJob = (id: ID, data: ApplicationDataUpdateRequest) => {
     const formData = new FormData();
     formData.append('phone', data.phone);
     formData.append('coverletter', data.coverletter);
@@ -22,6 +22,7 @@ const applyJob = (id: ID, data: ApplicationRequest) => {
         formData
     );
 }
+// const updateApplication = (id: ID, data)
 const userJobApi = {
     getJobs,
     retrieveJob,

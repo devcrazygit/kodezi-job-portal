@@ -4,7 +4,7 @@ import userJobApi from "modules/api/job.user";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { ParamType } from "types/common";
-import { AppliationResponseType } from "types/models/application";
+import { ApplicationResponseType } from "types/models/application";
 import { JobDetailForUser, JobItemType } from "types/models/job";
 import JobApplyForm from "views/pages/user/components/JobApplyForm";
 
@@ -13,7 +13,7 @@ const JobDetail = () => {
     const [initial, setInitial] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<JobItemType>();
-    const [application, setApplication] = useState<AppliationResponseType>();
+    const [application, setApplication] = useState<ApplicationResponseType>();
 
     const { apiErrorHandler } = useApi();
 

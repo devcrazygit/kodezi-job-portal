@@ -1,4 +1,4 @@
-import { Button, Card } from "@mui/material";
+import { Button } from "@mui/material";
 import useApi from "hooks/useApi";
 import adminJobApi from "modules/api/job.admin";
 import { useCallback, useEffect, useState } from "react";
@@ -54,35 +54,33 @@ const AdminHome = () => {
                 <Button variant="contained" onClick={() => navigate("/admin/jobs/new")}>Post Job</Button>
             </div>
             <div className="w-full mt-16">
-                <Card>
-                    <InfiniteScroll
-                        dataLength={jobs.length}
-                        next={handleLoad}
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            overflow: 'unset'
-                        }}
-                        hasMore={hasMore}
-                        loader={
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <ClipLoader size={30} color="#d0b052" />
-                            </div>
-                        }
-                        scrollableTarget="job-list"
-                    >
-                        {jobs.map(job => (
-                            <Link to={`/admin/jobs/${job.id}`} key={job.id}>
-                                <JobItem data={job}/>
-                            </Link>
-                        ))}
-                    </InfiniteScroll>
-                </Card>
+                <InfiniteScroll
+                    dataLength={jobs.length}
+                    next={handleLoad}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        overflow: 'unset'
+                    }}
+                    hasMore={hasMore}
+                    loader={
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <ClipLoader size={30} color="#d0b052" />
+                        </div>
+                    }
+                    scrollableTarget="job-list"
+                >
+                    {jobs.map(job => (
+                        <Link to={`/admin/jobs/${job.id}`} key={job.id}>
+                            <JobItem data={job}/>
+                        </Link>
+                    ))}
+                </InfiniteScroll>
             </div>
         </div>
     )

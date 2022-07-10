@@ -1,7 +1,7 @@
 import { Route } from ".";
 import { ApplicationController } from "../controller/admin/application.controller";
 import { JobController } from "../controller/admin/job.controller";
-import { applicationAdminQuery, applicationRetrieveQuery } from "../lib/validation/applications";
+import { applicationAdminQuery, applicationRetrieveQuery, applicationUpdateRequest } from "../lib/validation/applications";
 import { jobCreateRequest, jobQueryRequest, jobRetrieveRequest, jobUpdateRequest } from "../lib/validation/jobs";
 import { authorize } from "../middleware/authorize";
 import validate from "../middleware/validate";
@@ -47,11 +47,18 @@ const routes: Route[] = [
         handler: applicationController.get
     },
     {
-        name: 'application list',
+        name: 'application retrieve',
         method: 'get',
         path: '/api/admin/applications/:id',
         middleware: [validate(applicationRetrieveQuery)],
         handler: applicationController.retrieve
+    },
+    {
+        name: 'application update',
+        method: 'put',
+        path: '/api/admin/applications/:id',
+        middleware: [validate(applicationUpdateRequest)],
+        handler: applicationController.updateStatus
     }
 ]
 export default routes.map(route => {

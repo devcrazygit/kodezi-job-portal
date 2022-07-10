@@ -7,14 +7,14 @@ import userJobApi from "modules/api/job.user";
 import { FC, useCallback, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { ID } from "types/common";
-import { AppliationResponseType, ApplicationRequest, Resubmission } from "types/models/application";
+import { ApplicationResponseType, ApplicationRequest, Resubmission } from "types/models/application";
 import { RulesType } from "types/validation";
 import KButton from "views/components/Button";
 import ValidationErrorMessage from "views/components/ValidationErrorMessage";
 
 export type JobApplyFormProps = {
     jobId: ID,
-    application?: AppliationResponseType
+    application?: ApplicationResponseType
 } & DefaultComponentProps<CardTypeMap<{}, "div">>
 
 const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
@@ -82,7 +82,6 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
                 fileRef.current.value = "";
                 return;
             }
-            console.log({file});
             setSubData({ resume: file })
         }
     }, [setErrors, setSubData, validateResume]);
@@ -94,7 +93,7 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
         if (!validateResume(data.resume)) return;
         setLoading(true);
         userJobApi.applyJob(jobId, data)
-        .then((response: AppliationResponseType) => {
+        .then((response: ApplicationResponseType) => {
             setCurrentApplication(response);
             toast.success('Successfully submitted');
         })

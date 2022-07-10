@@ -1,6 +1,6 @@
 import { Role, UserModel } from "../model/User.model";
 
-const USER_SEEDS_COUNT = 20;
+const USER_SEEDS_COUNT = 500;
 
 const userSeed = async () => {
     // create an admin user
@@ -8,6 +8,12 @@ const userSeed = async () => {
         role: Role.ADMIN,
         name: 'Admin',
         email: 'admin@t.com',
+        password: 'abcabcabc'
+    });
+    await UserModel.create({
+        role: Role.ADMIN,
+        name: 'Admin 2',
+        email: 'admin2@t.com',
         password: 'abcabcabc'
     });
     

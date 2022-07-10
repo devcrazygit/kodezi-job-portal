@@ -6,7 +6,18 @@ export enum Resubmission {
     COVERLETTER = 1,
     RESUME = 2
 }
+export enum ApplicationStatus {
+    SUBMITTED = 0,
+    ACCEPTED = 1,
+    REJECTED = 2,
+    RESUBMISSION = 3
+}
 export type ApplicationQueryType = Pager;
+
+export interface ApplicationUpdateRequest {
+    status: ApplicationStatus,
+    resubmission: Resubmission,
+}
 
 export type ApplicationDataType = {
     id?: string,
@@ -15,14 +26,21 @@ export type ApplicationDataType = {
     phone: string,
     coverletter: string,
     resume: string,
-    author?: UserDataType
+    author?: UserDataType,
+    resubmission: Resubmission,
+    status: ApplicationStatus
 }
 export type ApplicationRequest = {
     phone: string,
     coverletter: string,
     resume: any
 }
-export type AppliationResponseType = {
+
+export type ApplicationDataUpdateRequest = {
+    coverletter?: string,
+    resume?: any
+}
+
+export type ApplicationResponseType = {
     id: ID,
-    resubmission: Resubmission
 } & ApplicationDataType;

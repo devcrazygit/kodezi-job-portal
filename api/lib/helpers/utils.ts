@@ -13,6 +13,6 @@ export const sanitizePager = (query: PagerQueryType): PagerQueryType => {
 export const toObjectId = (data: string): Types.ObjectId => {
     return new Types.ObjectId(data);
 }
-export const randomKey = (len: number = 5) => {
+export const randomKey = (len: number = 10) => {
     return Math.random().toString(36).slice(2, 2 + len);
 }
