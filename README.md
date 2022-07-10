@@ -1,2 +1,2 @@
-# mern-stack-typescript
-Example Project on How to develop and build MERN Stack with Typescript
+# Kodezi Job Portal
+Build with MERN stack
