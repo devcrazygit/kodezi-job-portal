@@ -65,8 +65,11 @@ export const applicationUpdateRequest: Schema = {
 
 export const applyUpdateRequest: Schema = {
     resume: {
+        in: ['body'],
+        optional: { options: { nullable: true }},
         custom: {
             options: (value, { req }) => {
+                console.log({value})
                 if (!req.files.resume) return true;
                 const resume = req.files.resume as UploadedFile;
                 return [

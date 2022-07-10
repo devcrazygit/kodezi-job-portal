@@ -61,7 +61,7 @@ const routes: Route[] = [
     {
         name: 'update appliation',
         method: 'post',
-        path: '/api/application/:applicationId',
+        path: '/api/applications/:id',
         middleware: [validate(applyUpdateRequest), authorize([Role.USER])],
         handler: applicationController.update
     }

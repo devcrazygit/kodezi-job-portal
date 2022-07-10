@@ -43,9 +43,9 @@ export class ApplicationController {
     async update(req: AuthRequest) {
         const currentUser = req.user;
         const data = req.body as ApplicationRequest;
-        const applicationId = req.params.applicationId;
+        const applicationId = req.params.id;
         const application = await ApplicationModel.findById(applicationId);
-        if (!application || application.user._id.equals(currentUser._id)) {
+        if (!application || !application.user._id.equals(currentUser._id)) {
             throw new ControllerError('No such a application', 404);
         }
         if (application.resubmission === Resubmission.NONE) {

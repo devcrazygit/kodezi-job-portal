@@ -7,7 +7,7 @@ import userJobApi from "modules/api/job.user";
 import { FC, useCallback, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { ID } from "types/common";
-import { ApplicationResponseType, ApplicationRequest, Resubmission } from "types/models/application";
+import { ApplicationResponseType, ApplicationRequest, Resubmission, ApplicationStatus } from "types/models/application";
 import { RulesType } from "types/validation";
 import KButton from "views/components/Button";
 import ValidationErrorMessage from "views/components/ValidationErrorMessage";
@@ -31,7 +31,7 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
     const rules: RulesType<ApplicationRequest> = {
         phone: ['required'],
         coverletter: ['required'],
-        resume: ['required']
+        resume: (currentApplication && currentApplication.resubmission === Resubmission.RESUME ? ['required'] : []) 
     }
     const {data, errors, validate, onInput, setErrors, setSubData} = useFormData<ApplicationRequest>({
         phone: (application ? application.phone : ''),
@@ -86,10 +86,20 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
         }
     }, [setErrors, setSubData, validateResume]);
 
-    const handleSubmit = useCallback(() => {
-        if (loading) return;
-        let result = validate();
-        if (result) return;
+    const handleUpdate = useCallback(() => {
+        if (!currentApplication) return;
+        if (currentApplication.resubmission === Resubmission.RESUME && !validateResume(data.resume)) return;
+        setLoading(true);
+        userJobApi.updateApplication(currentApplication.id, data)
+        .then((response: ApplicationResponseType) => {
+            setCurrentApplication(response);
+            toast.success('Successfully submitted');
+        })
+        .catch(apiErrorHandler)
+        .finally(() => setLoading(false));
+    }, [apiErrorHandler, currentApplication, data, validateResume])
+
+    const handleApply = useCallback(() => {
         if (!validateResume(data.resume)) return;
         setLoading(true);
         userJobApi.applyJob(jobId, data)
@@ -99,7 +109,23 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
         })
         .catch(e => apiErrorHandler(e))
         .finally(() => setLoading(false));
-    }, [apiErrorHandler, data, jobId, loading, validate, validateResume]);
+    }, [apiErrorHandler, data, jobId, validateResume])
+
+    const handleSubmit = useCallback(() => {
+        if (loading) return;
+        let result = validate();
+        if (result) return;
+        if (currentApplication) {
+            if (currentApplication.status !== ApplicationStatus.RESUBMISSION) {
+                toast.warn('The employer does not request you an update yet');
+                return;
+            }
+            handleUpdate();
+        } else {
+            handleApply();
+        }
+        
+    }, [currentApplication, handleApply, handleUpdate, loading, validate]);
 
     return (
         <Card {...rest}>
