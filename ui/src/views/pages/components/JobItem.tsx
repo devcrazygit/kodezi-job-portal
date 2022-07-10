@@ -3,10 +3,6 @@ import React from "react";
 import { JobItemType } from "types/models/job";
 
 const JobItem: React.FC<{ data: JobItemType}> = ({ data }) => {
-    // const navigate = useNavigate();
-    // const handleClick = useCallback(() => {
-    //     navigate(`/user/job/${data.id}`)
-    // }, [data.id, navigate])
     return (
         <Card className="flex-auto mb-2">
             <CardActionArea>

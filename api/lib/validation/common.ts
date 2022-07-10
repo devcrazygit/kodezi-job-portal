@@ -20,3 +20,8 @@ export const PageQuery: Schema = {
         toInt: true
     },
 }
+export const retrieveQuery: Schema = {
+    id: {
+        in: ['params']
+    }
+}

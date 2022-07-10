@@ -58,8 +58,9 @@ export class JobController {
     async retrieve(req: AuthRequest) {
         const id = req.params.id;
         const currentUser = req.user;
-        const job = await (await (await JobModel.findById(id)).populated('user'));
-        if (!job || job.user._id !== currentUser._id) {
+        const job = await JobModel.findById(id);
+        await job.populate('user').execPopulate();
+        if (!job || !job.user._id.equals(currentUser._id)) {
             throw new ControllerError('No such a job', 404)
         }
         return job2Response(job);

@@ -1,31 +1,55 @@
-import { Card, CardContent, Typography } from "@mui/material";
 import useApi from "hooks/useApi";
-import userJobApi from "modules/api/job.user";
+import applicationAdminApi from "modules/api/application.admin";
+import adminJobApi from "modules/api/job.admin";
 import { useCallback, useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router";
-import { ParamType } from "types/common";
-import { AppliationResponseType } from "types/models/application";
-import { JobDetailForUser, JobItemType } from "types/models/job";
-import JobApplyForm from "views/pages/user/components/JobApplyForm";
+import { Link } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
+import { Pager, ParamType } from "types/common";
+import { ApplicationDataType } from "types/models/application";
+import { JobItemType } from "types/models/job";
+import JobForm from "views/pages/admin/components/JobForm";
 
 const JobDetail = () => {
     const { id } = useParams<ParamType>();
     const [initial, setInitial] = useState<boolean>(true);
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<JobItemType>();
+    const [applications, setApplications] = useState<ApplicationDataType[]>([])
+
+    const [hasMore, setHasMore] = useState<boolean>(true);
+    const [pager, setPager] = useState<Pager>({ page: 1, size: 10});
+    const [aplloading, setAplLoading] = useState<boolean>(false);
+    
 
     const { apiErrorHandler } = useApi();
 
     const fetchData = useCallback(() => {
         if (!id || loading) return;
         setLoading(true);
-        userJobApi.retrieveJob(id)
-        .then((response: JobDetailForUser) => {
-            setData(response.job);
+        adminJobApi.retrieveJob(id)
+        .then((response: JobItemType) => {
+            setData(response);
         })
         .catch(e => apiErrorHandler(e))
         .finally(() => setLoading(false));
-    }, [apiErrorHandler, id, loading])
+    }, [apiErrorHandler, id, loading]);
+
+    const handleApplLoad = useCallback(() => {
+        if (loading || !hasMore || !id) return;
+        setLoading(true);
+        applicationAdminApi.get(id, pager)
+        .then((response: ApplicationDataType[]) => {
+            setApplications(old => [...old, ...response]);
+            setHasMore(response.length > 0);
+            if (response.length > 0) {
+                setPager({...pager, page: pager.page + 1});
+            }
+        })
+        .catch(apiErrorHandler)
+        .finally(() => setLoading(false));
+    }, [apiErrorHandler, hasMore, id, loading, pager]);
     
     useEffect(() => {
         if (initial) {
@@ -39,15 +63,37 @@ const JobDetail = () => {
         return <></>
 
     return (
-        <div className="w-full mt-16 overflow-y-scroll">
-            <Card>
-                <CardContent>
-                    <Typography variant="h2">{data.title}</Typography>
-                    <div className="mt-5">
-                        {data.description}
-                    </div>
-                </CardContent>
-            </Card>
+        <div className="w-full mt-6 overflow-y-scroll">
+            <JobForm job={data}/>
+            <div className="w-full mt-6">
+            <InfiniteScroll
+                    dataLength={applications.length}
+                    next={handleApplLoad}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        overflow: 'unset'
+                    }}
+                    hasMore={hasMore}
+                    loader={
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <ClipLoader size={30} color="#d0b052" />
+                        </div>
+                    }
+                    scrollableTarget="job-list"
+                >
+                    {applications.map(application => (
+                        <Link to={`/admin/jobs/${application.id}`} key={application.id}>
+                            {/* <JobItem data={application}/> */}
+                        </Link>
+                    ))}
+                </InfiniteScroll>
+            </div>
         </div>
     )
 }

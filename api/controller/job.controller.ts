@@ -33,7 +33,7 @@ export class JobController {
         return jobs.map(job => job2Response(job));
     }
     async retrieve(req: AuthRequest) {
-        const id = req.params.jobId;
+        const id = req.params.id;
         const job = await JobModel.findById(id);
         const user = req.user;
         if (!job) throw new ControllerError('No such a job', 400)

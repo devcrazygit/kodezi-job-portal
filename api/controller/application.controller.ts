@@ -13,7 +13,7 @@ export class ApplicationController {
 
     async apply(req: AuthRequest) {
         const data = req.body as ApplicationRequest;
-        const jobId = req.params.jobId;
+        const jobId = req.params.id;
         const job = await JobModel.findById(jobId);
         if (!job) {
             throw new ControllerError('No such a job', 404);
@@ -44,7 +44,7 @@ export class ApplicationController {
         const data = req.body as ApplicationRequest;
         const applicationId = req.params.applicationId;
         const application = await ApplicationModel.findById(applicationId);
-        if (!application || application.user._id !== currentUser._id) {
+        if (!application || application.user._id.equals(currentUser._id)) {
             throw new ControllerError('No such a application', 404);
         }
         if (application.resubmission === Resubmission.NONE) {

@@ -1,5 +1,5 @@
 import { Schema } from "express-validator";
-import { PageQuery } from "./common";
+import { PageQuery, retrieveQuery } from "./common";
 
 export const jobCreateRequest: Schema = {
     title: {
@@ -20,9 +20,7 @@ export const jobCreateRequest: Schema = {
     }
 }
 export const jobRetrieveRequest: Schema = {
-    id: {
-        in: ['params']
-    },
+    ...retrieveQuery
 }
 
 export const jobUpdateRequest: Schema = {

@@ -46,7 +46,7 @@ const routes: Route[] = [
     {
         name: 'retrieve job',
         method: 'get',
-        path: '/api/jobs/:jobId',
+        path: '/api/jobs/:id',
         middleware: [validate(jobRetrieveRequest), authorize([Role.USER])],
         handler: jobController.retrieve
     },
@@ -54,7 +54,7 @@ const routes: Route[] = [
     {
         name: 'apply to job',
         method: 'post',
-        path: '/api/apply/jobs/:jobId',
+        path: '/api/apply/jobs/:id',
         middleware: [validate(applyRequest), authorize([Role.USER])],
         handler: applicationController.apply
     },

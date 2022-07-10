@@ -85,7 +85,7 @@ const UserHome = () => {
                     scrollableTarget="job-list"
                 >
                     {jobs.map(job => (
-                        <Link to={`/user/job/${job.id}`} key={job.id}>
+                        <Link to={`/user/jobs/${job.id}`} key={job.id}>
                             <JobItem data={job}/>
                         </Link>
                     ))}

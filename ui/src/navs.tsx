@@ -4,7 +4,9 @@ import SignUp from "views/layouts/authentication/SignUp";
 import AdminHome from "views/pages/admin/AdminHome";
 import EmptyPage from "views/pages/EmptyPage";
 import JobDetail from "views/pages/user/JobDetail";
+import AdminJobDetail from "views/pages/admin/JobDetail";
 import UserHome from "views/pages/user/UserHome";
+import JobCreate from "views/pages/admin/JobCreate";
 
 export enum Guard {
     PUBLIC = 0,
@@ -29,6 +31,13 @@ const navs: NavItemType[] = [
         menu: true
     },
     {
+        anchor: 'Job Detail',
+        to: '/user/jobs/:id',
+        component: JobDetail,
+        guard: Guard.USER,
+        menu: false
+    },
+    {
         anchor: 'Dashboard',
         to: '/admin',
         component: AdminHome,
@@ -36,11 +45,16 @@ const navs: NavItemType[] = [
         menu: true
     },
     {
+        anchor: 'Job Post',
+        to: '/admin/jobs/new',
+        component: JobCreate,
+        guard: Guard.ADMIN,
+    },
+    {
         anchor: 'Job Detail',
-        to: '/user/job/:id',
-        component: JobDetail,
-        guard: Guard.USER,
-        menu: false
+        to: '/admin/jobs/:id',
+        component: AdminJobDetail,
+        guard: Guard.ADMIN,
     },
     {
         anchor: 'Empty Page',

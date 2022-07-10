@@ -3,13 +3,14 @@ import useApi from "hooks/useApi";
 import adminJobApi from "modules/api/job.admin";
 import { useCallback, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { Pager } from "types/common";
 import { JobItemType } from "types/models/job";
 import JobItem from "views/pages/components/JobItem";
 
 const AdminHome = () => {
+    const navigate = useNavigate();
     const [jobs, setJobs] = useState<JobItemType[]>([]);
     const [initial, setInitial] = useState<boolean>(true);
     const [hasMore, setHasMore] = useState<boolean>(true);
@@ -50,7 +51,7 @@ const AdminHome = () => {
     return (
         <div className="flex flex-col flex-grow overflow-y-scroll pt-4" id="job-list">
             <div className="flex">
-                <Button variant="contained">Post Job</Button>
+                <Button variant="contained" onClick={() => navigate("/admin/jobs/new")}>Post Job</Button>
             </div>
             <div className="w-full mt-16">
                 <Card>
@@ -76,7 +77,7 @@ const AdminHome = () => {
                         scrollableTarget="job-list"
                     >
                         {jobs.map(job => (
-                            <Link to={`/admin/job/${job.id}`} key={job.id}>
+                            <Link to={`/admin/jobs/${job.id}`} key={job.id}>
                                 <JobItem data={job}/>
                             </Link>
                         ))}

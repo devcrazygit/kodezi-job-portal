@@ -1,12 +1,16 @@
 import { Request } from "express";
 import { UploadedFile } from "express-fileupload";
 import { body, Schema } from "express-validator";
-import { PageQuery } from "./common";
+import { PageQuery, retrieveQuery } from "./common";
 import { jobRetrieveRequest } from "./jobs";
 
 
 export const applicationQuery: Schema = {
     ...PageQuery,
+}
+export const applicationAdminQuery: Schema = {
+    ...applicationQuery,
+    ...retrieveQuery
 }
 export const applyRequest: Schema = {
     phone: {

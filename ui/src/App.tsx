@@ -5,9 +5,7 @@ import { CssBaseline } from '@mui/material';
 import SignIn from 'views/layouts/authentication/SignIn';
 import SignUp from 'views/layouts/authentication/SignUp';
 import DashboardLayout from 'views/layouts/DashboardLayout';
-import UserHome from 'views/pages/user/UserHome';
-import AdminHome from 'views/pages/admin/AdminHome';
-import JobDetail from 'views/pages/user/JobDetail';
+import navs, { Guard } from 'navs';
 
 function App() {
   return (
@@ -18,9 +16,9 @@ function App() {
           <Route path="signin" element={<SignIn />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="/" element={<DashboardLayout />}>
-            <Route path="user" element={<UserHome />} />
-            <Route path="user/job/:id" element={<JobDetail />} />
-            <Route path="admin" element={<AdminHome />} />
+            {navs.filter(nav => nav.guard !== Guard.PUBLIC).map((nav, index) => (
+              <Route path={nav.to} element={<nav.component></nav.component>} key={index} />
+            ))}
           </Route>
         </Routes>
       </Root>

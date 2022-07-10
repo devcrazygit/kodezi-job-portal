@@ -20,14 +20,14 @@ export interface UserResponse {
     role: Role,
     name: string,
     email: string,
-    createdDate: string,
-    updatedDate: string
+    createDate: string,
+    updateDate: string
 }
 export const user2Response = (user: User) => ({
     id: user._id, 
     name: user.name, 
     email: user.email,
     role: user.role,
-    createdDate: user.createDate,
-    updatedDate: user.updateDate
+    createDate: user.createDate,
+    updateDate: user.updateDate
 })
