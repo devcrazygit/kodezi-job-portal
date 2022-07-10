@@ -1,5 +1,6 @@
 import { snakeCase } from 'lodash';
 import { SerializableFileType } from 'types/common';
+import { saveAs } from "file-saver";
 
 export const convertFileToSerializable = (file: File): SerializableFileType => {
     return {
@@ -76,3 +77,9 @@ export const appImageUrl = (url: string) => {
     }
     return process.env.REACT_APP_BASE_URL + url;
 };
+
+export const handleFileDownload = (url?: string) => {
+    if (!url) return;
+    const ext = url.split('.').pop();
+    saveAs(url, `resume.${ext}`);
+}

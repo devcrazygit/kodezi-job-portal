@@ -7,6 +7,7 @@ import JobDetail from "views/pages/user/JobDetail";
 import AdminJobDetail from "views/pages/admin/JobDetail";
 import UserHome from "views/pages/user/UserHome";
 import JobCreate from "views/pages/admin/JobCreate";
+import ApplicationDetail from "views/pages/admin/ApplicationDeail";
 
 export enum Guard {
     PUBLIC = 0,
@@ -54,6 +55,12 @@ const navs: NavItemType[] = [
         anchor: 'Job Detail',
         to: '/admin/jobs/:id',
         component: AdminJobDetail,
+        guard: Guard.ADMIN,
+    },
+    {
+        anchor: 'Application Detail',
+        to: '/admin/applications/:id',
+        component: ApplicationDetail,
         guard: Guard.ADMIN,
     },
     {

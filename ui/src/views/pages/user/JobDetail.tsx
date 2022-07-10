@@ -41,7 +41,7 @@ const JobDetail = () => {
         return <></>
 
     return (
-        <div className="w-full mt-6 overflow-y-scroll">
+        <div className="w-full mt-6 pt-3 overflow-y-scroll">
             <Card>
                 <CardContent>
                     <Typography variant="h2">{data.title}</Typography>

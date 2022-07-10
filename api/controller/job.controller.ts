@@ -28,6 +28,7 @@ export class JobController {
         }
         const jobs = await JobModel.find(query)
             .populate('user', ['name'])
+            .sort({createDate: 'descending'})
             .skip(size * (page - 1)).limit(size);
         
         return jobs.map(job => job2Response(job));

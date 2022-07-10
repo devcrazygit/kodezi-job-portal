@@ -10,6 +10,7 @@ import { Pager, ParamType } from "types/common";
 import { ApplicationDataType } from "types/models/application";
 import { JobItemType } from "types/models/job";
 import JobForm from "views/pages/admin/components/JobForm";
+import ApplicationItem from "views/pages/components/ApplicationItem";
 
 const JobDetail = () => {
     const { id } = useParams<ParamType>();
@@ -20,13 +21,12 @@ const JobDetail = () => {
 
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [pager, setPager] = useState<Pager>({ page: 1, size: 10});
-    const [aplloading, setAplLoading] = useState<boolean>(false);
     
 
     const { apiErrorHandler } = useApi();
 
     const fetchData = useCallback(() => {
-        if (!id || loading) return;
+        if (!id) return;
         setLoading(true);
         adminJobApi.retrieveJob(id)
         .then((response: JobItemType) => {
@@ -34,7 +34,7 @@ const JobDetail = () => {
         })
         .catch(e => apiErrorHandler(e))
         .finally(() => setLoading(false));
-    }, [apiErrorHandler, id, loading]);
+    }, [apiErrorHandler, id]);
 
     const handleApplLoad = useCallback(() => {
         if (loading || !hasMore || !id) return;
@@ -55,15 +55,16 @@ const JobDetail = () => {
         if (initial) {
             setInitial(false);
             fetchData();
+            handleApplLoad();
         }
-    }, [fetchData, initial])
+    }, [fetchData, handleApplLoad, initial])
 
     
     if (!data || !id) 
         return <></>
 
     return (
-        <div className="w-full mt-6 overflow-y-scroll">
+        <div className="w-full mt-6 flex-grow overflow-y-scroll" id="job-detail">
             <JobForm job={data}/>
             <div className="w-full mt-6">
             <InfiniteScroll
@@ -74,7 +75,7 @@ const JobDetail = () => {
                         flexDirection: 'column',
                         overflow: 'unset'
                     }}
-                    hasMore={hasMore}
+                    hasMore={initial || hasMore}
                     loader={
                         <div
                             style={{
@@ -85,11 +86,12 @@ const JobDetail = () => {
                             <ClipLoader size={30} color="#d0b052" />
                         </div>
                     }
-                    scrollableTarget="job-list"
+                    scrollableTarget="job-detail"
                 >
                     {applications.map(application => (
-                        <Link to={`/admin/jobs/${application.id}`} key={application.id}>
-                            {/* <JobItem data={application}/> */}
+                        <Link to={`/admin/applications/${application.id}`} key={application.id}>
+                            xxx
+                            <ApplicationItem data={application} />
                         </Link>
                     ))}
                 </InfiniteScroll>

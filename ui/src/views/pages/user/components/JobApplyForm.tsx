@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, CardTypeMap, Stack, TextField, Typography } from "@mui/material";
 import { DefaultComponentProps } from "@mui/material/OverridableComponent";
-import { saveAs } from "file-saver";
+import { handleFileDownload } from "helpers/file";
 import useApi from "hooks/useApi";
 import useFormData from "hooks/useFormData";
 import userJobApi from "modules/api/job.user";
@@ -57,12 +57,17 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
             if (resume.size > 5000000) {
                 setErrors((old) => ({
                     ...old,
-                    avatar: ['Sorry, resume should be less than 5MB'],
+                    resume: ['Sorry, resume should be less than 5MB'],
                 }));
                 return false;
             }
+            return true;
+        } else {
+            setErrors((old) => ({
+                ...old,
+                resume: ['Please select resume'],
+            }));
         }
-        return true;
     }, [setErrors])
 
     const handleResumeSelect = useCallback(({ target }: any) => {
@@ -96,13 +101,6 @@ const JobApplyForm: FC<JobApplyFormProps> = ({jobId, application, ...rest}) => {
         .catch(e => apiErrorHandler(e))
         .finally(() => setLoading(false));
     }, [apiErrorHandler, data, jobId, loading, validate, validateResume]);
-
-    
-    const handleFileDownload = useCallback((url?: string) => {
-        if (!url) return;
-        const ext = url.split('.').pop();
-        saveAs(url, `resume.${ext}`);
-    }, [])
 
     return (
         <Card {...rest}>

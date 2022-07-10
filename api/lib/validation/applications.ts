@@ -34,7 +34,11 @@ export const applyRequest: Schema = {
         in: ['body'],
         optional: { options: { nullable: true }},
     },
-    ...jobRetrieveRequest
+    ...retrieveQuery
+}
+
+export const applicationRetrieveQuery: Schema = {
+    ...retrieveQuery
 }
 
 export const applyUpdateRequest: Schema = {
