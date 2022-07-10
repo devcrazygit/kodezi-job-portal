@@ -6,7 +6,7 @@ import { LoremIpsum } from "lorem-ipsum";
 
 const applicationSeed = async () => {
     const jobs = await JobModel.find().sort({ createDate: 'ascending' });
-    const users = await UserModel.find({ role: Role.USER }).sort({ createDate: 'ascending' });
+    const users = await UserModel.find({ role: parseInt(Role.USER.toString()) }).sort({ createDate: 'ascending' });
     const [job1] = jobs;
 
     const lorem = new LoremIpsum({

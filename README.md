@@ -58,3 +58,20 @@ As you can see, if you do not use docker, then need more command. So using docke
 ### Seed
 
 For test, you have to seed db at first
+
+```
+> cd ./api
+> npm ru seed
+```
+
+Admin Users (2 admin users)
+- admin1@t.com, admin2@t.com
+- abcabcabc (password)
+
+There are 500 sample users
+
+Applicant Users email is `t1@t.com`, `t2@t.com` ... `t500@t.com`
+and password is `abcabcabc` for all users
+
+There will be several job postings, authored by each of admin users.
+And all users are applied to the `Job 1` after db seed.

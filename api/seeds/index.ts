@@ -17,6 +17,7 @@ const dbSeed = async () => {
                 break;
             case 'applications':
                 await applicationSeed();
+                break;
         }
         return;
     }
