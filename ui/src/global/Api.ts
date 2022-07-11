@@ -65,7 +65,6 @@ const apiWrapper = (
                 data = snakeCaseKeys(data);
             }
         } else {
-            data = snakeCaseKeys(data);
             absUrl = getUrlWithParam(absUrl, data);
         }
 
